@@ -1,0 +1,488 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="בארי ברנר מציעה שוקולד גורמה יוקרתי בעבודת יד, מתנות לעסקים, אירועים וחגיגות מיוחדות. שוקולד בלגי איכותי עם אריזות מעוצבות.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<style>
+/* Zappy Attribution Header Styles */
+.zappy-header {
+  position: static;
+  width: 100%;
+  background: white;
+  box-shadow: 0px 4px 19px 0px rgba(0,0,0,0.04);
+  padding: 16px 10px;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  color: #4a4a4a;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 21px;
+}
+
+    .zappy-header p {
+      margin: 0;
+      padding: 0;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 21px;
+      white-space: nowrap;
+      display: inline-block;
+      vertical-align: baseline;
+      margin-bottom: 0 !important;
+    }
+
+.zappy-header .created-by {
+  text-transform: lowercase;
+  font-weight: 400;
+}
+
+.zappy-header .zappy-link {
+  font-weight: 700;
+  color: #4a4a4a;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.zappy-header .zappy-link:hover {
+  opacity: 0.7;
+}</style>
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+<!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'd260bda5-3acb-455a-b976-f6820f980528',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve session ID
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('click', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Zappy Attribution Header -->
+<div id="zappy-attribution-header" class="zappy-header" style="display: none;">
+  <p>
+    <span>Happily </span>
+    <span class="created-by">created by</span> 
+    <a href="https://zappy5.com" target="_blank" rel="noopener noreferrer" class="zappy-link">Zappy</a>
+  </p>
+</div>
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="nav-brand">
+                <a href="/" class="logo-link">
+                    <img class="logo" src="" alt="בארי ברנר">
+                </a>
+            </div>
+            
+            <button class="mobile-toggle" id="mobileToggle" aria-label="תפריט">
+                <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+                <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+            </button>
+            
+            <button class="phone-header-btn" aria-label="התקשר אלינו">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/products">המוצרים שלנו</a></li>
+                <li><a href="/about">אודות</a></li>
+                <li><a href="/contact">צור קשר</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <img data-placeholder="hero-1" data-context="יוקרתי ואלגנטי של חנות שוקולד מודרנית עם תצוגת שוקולד מעוצבת, תאורה חמה ואווירה מזמינה" src="assets/hero-hero-1.webp" alt="בארי ברנר - שוקולד גורמה יוקרתי" class="hero-img">
+        <div class="container hero-content">
+            <h1>ברוכים הבאים לבארי ברנר</h1>
+            <p class="hero-subtitle">שוקולד גורמה יוקרתי המשלב מסורת עם חדשנות</p>
+            <a href="/products" class="btn btn-primary">גלה את המוצרים שלנו</a>
+        </div>
+    </section>
+
+    <section class="intro-section">
+        <div class="container">
+            <div class="intro-content">
+                <h2>חוויית שוקולד שלא תשכחו</h2>
+                <p>בארי ברנר מציעה מגוון שוקולדים יוקרתיים המיוצרים בקפידה מחומרי גלם מהשורה הראשונה. כל פרלינה, כל טרופל וכל יצירה שלנו היא תוצאה של אומנות, מקצועיות ותשוקה אמיתית לשוקולד.</p>
+                <p>אנחנו מתמחים במתנות לעסקים, אירועים מיוחדים וחגיגות פרטיות - כל מוצר נארז באלגנטיות ומותאם לצרכי הלקוח.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">מבחר המוצרים המובילים שלנו</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img data-placeholder="service-1" data-context="פרלינות שוקולד בלגי מעוצבות באריזה יוקרתית עם גימור זהב" src="assets/service-service-1.webp" alt="פרלינות שוקולד בלגי">
+                    </div>
+                    <div class="product-info">
+                        <h3>פרלינות בלגיות</h3>
+                        <p>פרלינות שוקולד בלגי מובחרות עם מילוי קרמי וטעמים ייחודיים</p>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img data-placeholder="service-2" data-context="טרופלי שוקולד מצופים באבקת קקאו מוצגים על משטח שיש" src="assets/service-service-2.webp" alt="טרופלי שוקולד">
+                    </div>
+                    <div class="product-info">
+                        <h3>טרופלים מעודנים</h3>
+                        <p>טרופלי שוקולד בעבודת יד עם ציפוי קקאו או שוקולד לבן</p>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img data-placeholder="service-3" data-context="קופסת מתנה יוקרתית של שוקולד עם סרט זהב ועיטורים אלגנטיים" src="assets/service-service-3.webp" alt="מתנות לעסקים">
+                    </div>
+                    <div class="product-info">
+                        <h3>מתנות לעסקים</h3>
+                        <p>אריזות מתנה מותאמות אישית לחגים ואירועים עסקיים</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="luxury-experience">
+        <div class="container">
+            <div class="experience-split">
+                <div class="experience-text">
+                    <h2>אומנות השוקולד במיטבה</h2>
+                    <p>כל יצירה של בארי ברנר עוברת תהליך ייצור קפדני המשלב טכניקות מסורתיות עם חדשנות מודרנית. אנו משתמשים רק בשוקולד איכותי ביותר מיצרנים מובילים באירופה.</p>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> חומרי גלם מובחרים מאירופה</li>
+                        <li><i class="fas fa-check"></i> ייצור בעבודת יד קפדנית</li>
+                        <li><i class="fas fa-check"></i> אריזות יוקרתיות מעוצבות</li>
+                        <li><i class="fas fa-check"></i> התאמה אישית לכל אירוע</li>
+                    </ul>
+                </div>
+                <div class="experience-image">
+                    <img data-placeholder="service-4" data-context="שוקולטייר מכין שוקולד בעבודת יד במטבח מקצועי עם כלים מודרניים" src="assets/service-service-4.webp" alt="תהליך הכנת שוקולד">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="occasions-section">
+        <div class="container">
+            <h2 class="section-title">מושלם לכל אירוע</h2>
+            <div class="occasions-grid">
+                <div class="occasion-card">
+                    <img data-placeholder="service-5" data-context="מתנת שוקולד יוקרתית לאירוע עסקי עם לוגו מוטבע" src="assets/service-service-5.webp" alt="אירועים עסקיים">
+                    <h3>אירועים עסקיים</h3>
+                    <p>מתנות מרשימות ללקוחות ועובדים</p>
+                </div>
+                <div class="occasion-card">
+                    <img data-placeholder="service-6" data-context="קופסת שוקולד אלגנטית לחתונה עם עיטורים זהב ופרחים" src="assets/service-service-6.webp" alt="חתונות ואירועים">
+                    <h3>חתונות ואירועים</h3>
+                    <p>שוקולד יוקרתי לאורחים מיוחדים</p>
+                </div>
+                <div class="occasion-card">
+                    <img data-placeholder="service-7" data-context="מארז שוקולד חגיגי עם סרט אדום לחגים" src="assets/service-service-7.webp" alt="חגים ומועדים">
+                    <h3>חגים ומועדים</h3>
+                    <p>מתנות מושלמות לכל חג</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">מה הלקוחות שלנו אומרים</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"השוקולד הכי טעים ויוקרתי שאי פעם טעמתי. השתמשנו במוצרים של בארי ברנר לאירוע החברה שלנו והאורחים היו מרוצים מאוד!"</p>
+                    <p class="testimonial-author">- שרה כהן, מנהלת משאבי אנוש</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"איכות יוצאת דופן ושירות מעולה. האריזות היו מושלמות והשוקולד היה פשוט מדהים. בהחלט נזמין שוב!"</p>
+                    <p class="testimonial-author">- דוד לוי, מתכנן אירועים</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"בחרנו את בארי ברנר למתנות לאורחי החתונה שלנו. כולם התלהבו מהטעם והמראה המושלם. תודה רבה!"</p>
+                    <p class="testimonial-author">- רחל ויוסי אברהם</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>מוכנים לחוות שוקולד אמיתי?</h2>
+                <p>צרו קשר עוד היום ונעזור לכם למצוא את המוצר המושלם</p>
+                <a href="/contact" class="btn btn-secondary">צור קשר</a>
+            </div>
+        </div>
+    </section>
+
+    <a href="https://wa.me/[phone]" target="_blank" class="whatsapp-float" aria-label="WhatsApp" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    
+    <!-- Legal Footer -->
+    <footer class="legal-footer">
+      <div class="container">
+        <div class="footer-main">
+          <div class="all-rights-reserved">
+            <p>© 2025 בארי ברנר. כל הזכויות שמורות.</p>
+          </div>
+          <div class="footer-social"><a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+<a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+<a href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div>
+          <div class="footer-legal">
+            <a href="privacy.html" target="_blank" rel="noopener" aria-label="מדיניות פרטיות">
+              מדיניות פרטיות
+            </a>
+            <span class="separator">|</span>
+            <a href="accessibility.html" target="_blank" rel="noopener" aria-label="נגישות">
+              נגישות
+            </a>
+            <span class="separator">|</span>
+            <a href="terms.html" target="_blank" rel="noopener" aria-label="תנאי שימוש">
+              תנאי שימוש
+            </a>
+          </div>
+        </div>
+        <div class="zappy-attribution">
+          <p>נוצר באמצעות Zappy</p>
+        </div>
+      </div>
+    </footer>
+
+
+<!-- Zappy Attribution Header Script -->
+<script>
+(function() {
+  var websiteId = 'd260bda5-3acb-455a-b976-f6820f980528';
+  
+  // Don't show header in preview mode
+  var currentUrl = window.location.href;
+  var isPreview = currentUrl.includes('/preview/') || 
+                  currentUrl.includes('/preview-fullscreen/') || 
+                  currentUrl.includes('localhost:5001') ||
+                  currentUrl.includes('localhost:3000');
+  
+  if (isPreview) {
+    return; // Exit early in preview mode
+  }
+  
+  fetch('https://api.zappy5.com/api/website/' + websiteId + '/tier')
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      if (data.showAttribution) {
+        var header = document.getElementById('zappy-attribution-header');
+        if (header) {
+          header.style.display = 'block';
+        }
+      }
+    })
+    .catch(function(error) {
+      console.error('Failed to check tier:', error);
+    });
+})();
+</script>
+    <div data-integration="accessibility:toolbar"></div>
+    <script src="script.js"></script>
+</body></html>
